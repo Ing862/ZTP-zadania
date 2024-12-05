@@ -9,8 +9,6 @@ public interface IMessage
 	string Content { get; set; }
 }
 
-
-
 public class Message
 {
 	public int Id { get; set; }
@@ -79,7 +77,7 @@ public class MessageBoxDecorator :IMessageBox
 	}
 	public virtual Message GetMessageById(int id)
 	{
-		_messageBox.GetMessageById(id);
+		return _messageBox.GetMessageById(id);
 	}
 	public virtual void DisplayAllMessageTitles()
 	{
@@ -87,6 +85,56 @@ public class MessageBoxDecorator :IMessageBox
 	}
 
 } 
+
+public class AddMessageDecorator : MessageBoxDecorator
+{
+	private List<string> _bannedWords;
+
+	bool containsBannedWord = true;
+	string messageContent = "";
+
+	public AddMessageDecorator(IMessageBox messageBox, List<string> bannedWords) : base(messageBox)
+	{
+		_bannedWords = bannedWords;
+	}
+
+	public override void AddMessage(Message message)
+	{
+		messageContent = message.Content;
+		// jeżeli zawiera zakazane słowo
+		foreach (string word in _bannedWords) 
+		{
+			if (messageContent.Contains(word))
+			{
+				Console.WriteLine($"Znaleziono zakazane słowo w {message.Id}");
+			}
+			else
+			{
+				base.AddMessage(message);
+			}
+
+		}
+	}
+}
+
+public class GetMessageByIdDecorator : MessageBoxDecorator
+{
+	private List<string> _bannedWords;
+
+	public GetMessageById(IMessageBox messageBox, List<string> bannedWords) : base(messageBox)
+	{
+		_bannedWords = bannedWords;
+	}
+
+	public override Message GetMessageById(int id)
+	{
+		Message message = base.GetMessageById(id);
+
+
+
+		return message;
+	}
+}
 
 class Program
 {
