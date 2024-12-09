@@ -4,6 +4,34 @@ using System.Text.RegularExpressions;
 
 // Reprezentuje pojedynczą figurę szachową, w tym jej typ (np. pion, wieża)
 // oraz kolor (biały lub czarny).
+
+public interface ICommand
+{
+
+	void Execute();
+
+	void Undo();
+}
+
+// cofnięcie ostatniego ruchu
+public class Undo : ICommand
+{
+
+}
+
+// ponowienie cofniętego ruchu
+public class Redo : ICommand
+{
+
+}
+
+// **dla chętnych**
+// odtworzenie całej sekwencji ruchów wykonanych do tej pory z krótkimi pauzami między nimi
+//public class Replay : ICommand
+//{
+
+//}
+
 public class ChessPiece
 {
 	public enum PieceType { Pawn, Rook, Knight, Bishop, Queen, King }
